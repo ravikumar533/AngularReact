@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html>
+<html ng-app="ReactAngular">
+<head>
+    <title> Skanska Angular React</title>
+	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+    <style type="text/css">
+        hr{ margin:0 !important;}
+         iframe { width:100%;}
+        p{ display:block;}
+        h4{ height:50px;}
+        p.articleDesc{ height:100px; font-size:12px; overflow:hidden;}
+        .panel{ padding:5px; border:1px solid black;}
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.min.js"></script>
+</head>
+<body>
+    <div ng-controller="VideosController as cntrl" class="container">
+        <h1>{{cntrl.text}}</h1>
+        <hr />
+        <navigationbar></navigationbar>
+        <hr />
+        <tagsList></tagsList>
+        <hr />
+        <videodirective></videodirective>
+    </div>
+    <script type="text/javascript">
+        var videos = [
+            {
+                id: 1,
+                url: "https://www.youtube.com/embed/e1ddsJ38D5Q",
+                title: "OOPIRI",
+                desc: "Oopiri (English: Breath) in Telugu, titled Thozha (English: Friend) in Tamil, is an Indian Telugu-Tamil dramedy film directed by Vamsi Paidipally. It is the official remake of the French film The Intouchables (2011). Produced by Prasad V Potluri in both Telugu and Tamil languages, the film features Nagarjuna Akkineni and Karthi playing the male leads, while Tamannaah plays the female lead. Slight differences exist in the supporting cast between both versions. Gopi Sunder composes the film's music. Production began on 11 February 2015 in Hyderabad and principal photography began on 16 March 2015 in Chennai. The film was released worldwide on 25 March 2016 to positive reception from critics.[3]",
+                tags: ["Movie", "Comedy", "Trailer", "Drama"]
+            },
+            {
+                id: 2,
+                url: "https://www.youtube.com/embed/Xp76j7IDQKA",
+                title: "COCA-COLA TRAILER",
+                desc: "Ant-Man tries to make off with Hulk's last Coke Mini, leading to an epic chase through the city streets",
+                tags: ["Advertise"]
+            },
+            {
+                id: 3,
+                url: "https://www.youtube.com/embed/dKrVegVI0Us",
+                title: "Captain America: Civil War",
+                desc: "Political pressure mounts to install a system of accountability when the actions of the Avengers lead to collateral damage. The new status quo deeply divides members of the team. Captain America (Chris Evans) believes superheroes should remain free to defend humanity without government interference. Iron Man (Robert Downey Jr.) sharply disagrees and supports oversight. As the debate escalates into an all-out feud, Black Widow (Scarlett Johansson) and Hawkeye (Jeremy Renner) must pick a side.",
+                tags: ["Action", "Thriller", "Trailer"]
+            },
+            {
+                id: 4,
+                url: "https://www.youtube.com/embed/2ABsGIkFPmo",
+                title: "X-Men: Apocalypse",
+                desc: "X-Men: Apocalypse is a 2016 American superhero film based on the fictional X-Men characters that appear in Marvel Comics. It is the ninth installment in the X-Men film series and a sequel to 2014's X-Men: Days of Future Past. Directed by Bryan Singer, with a screenplay by Simon Kinberg from a story conceived by Singer, Kinberg, Michael Dougherty and Dan Harris, the film stars an ensemble cast, led by James McAvoy, Michael Fassbender, Jennifer Lawrence, Oscar Isaac, Nicholas Hoult, Rose Byrne, Tye Sheridan, Sophie Turner, Olivia Munn and Lucas Till. In X-Men: Apocalypse, the ancient mutant En Sabah Nur awakens in 1983 and plans to cleanse the human race and take over the world, leading the X-Men to try to stop him and defeat his team of renegade mutants.",
+                tags: ["Action", "Thriller", "Trailer"]
+            },
+            {
+                id: 5,
+                url: "https://www.youtube.com/embed/v71ce1Dqqns",
+                title: "Jason Bourne",
+                desc: "Jason Bourne is a fictional character and the protagonist of a series of novels by Robert Ludlum and subsequent film adaptations. He first appeared in the novel The Bourne Identity (1980), which was adapted for television in 1988. The novel was very loosely adapted in 2002 into a feature film under the same name and starred Matt Damon in the lead role.",
+                tags: ["Action", "Thriller", "Trailer"]
+            },
+            {
+                id: 6,
+                url: "https://www.youtube.com/embed/Orw8CZpzIDU",
+                title: "Warcraft",
+                desc: "Looking to escape from his dying world, the orc shaman Gul'dan utilizes dark magic to open a portal to the human realm of Azeroth. Supported by the fierce fighter Blackhand, Gul'dan organizes the orc clans into a conquering army called the Horde. Uniting to protect Azeroth from these hulking invaders are King Llane, the mighty warrior Anduin Lothar (Travis Fimmel) and the powerful wizard Medivh. As the two races collide, leaders from each side start to question if war is the only answer.",
+                tags: ["Action", "Thriller", "Trailer"]
+            },
+            {
+                id: 7,
+                url: "https://www.youtube.com/embed/9mdJV5-eias",
+                title: "KABALI",
+                desc: "Kabali is an upcoming 2016 Indian Tamil-language gangster-drama film written and directed by Pa. Ranjith.[2] The film stars Rajinikanth as the titular character, whilst Taiwanese actor Winston Chao, Radhika Apte, Dhansika, Dinesh Ravi, Kalaiyarasan, and John Vijay star in other pivotal roles. Principal photography for the film began on 21 August 2015 in Chennai. While filming mostly occurred in Malaysia, smaller scenes were shot in Bangkok and Hong Kong.[3][4][5][6] The film is slated for release on 15 July 2016.[1]",
+                tags: ["Action", "Thriller", "Trailer"]
+            },
+            ];
+        var navigationBars = [{ id: 1, name: "Alphabetical Order", type: "left" }, { id: 2, name: "Most Viewed", type: "left" }, { id: 3, name: "Date added", type: "left" }, { id: 4, name: "Search", type: "right" }]
+        var tags = ["Action", "Thriller", "Trailer", "Comedy", "Movie"];
+        var FilterMenu = React.createClass({
+            displayName: "Filter Menu",
+            render: function render() {                
+                return React.createElement(
+                    "li",
+                    { role: "presentation" ,className:(this.props.type==="left"?"":"navbar-right")},
+                     React.createElement("a", { href: "#" }, this.props.name)
+                    );
+            }
+        });
+        var FilterMenuList = React.createClass({
+            displayName: "Filter Menu List",
+            render: function render() {
+                var filteredMenus = this.props.data.map(function (comment) {
+                    return React.createElement(
+                        FilterMenu,
+                        comment
+                    );
+                });
+                return React.createElement(
+                        "Ul",
+                        { className: "nav nav-pills" },
+                        filteredMenus
+                    );
+            }
+        });
+        var Tag = React.createClass({
+            displayName: "Tag",
+
+            render: function render() {
+                return React.createElement(
+                    "span",
+                    { className: "label label-default" },
+                    this.props.obj
+                );
+            }
+        });
+        var VideoElement = React.createClass({
+            displayName: "VideoElement",
+
+            rawMarkup: function rawMarkup() {
+                var rawMarkup = marked(this.props.children.toString(), { sanitize: true });
+                return { __html: rawMarkup };
+            },
+            render: function render() {
+                return React.createElement(
+                    "div",
+                    { className: "col-lg-3" },
+                    React.createElement(
+                        "div",
+                        { className: "panel" },
+                        React.createElement("iframe", { src: this.props.src, allowfullscreen: true, webkitallowfullscreen: true, mozAllowFullScreen: true, frameborder: "0" }),
+                        React.createElement(
+                            "div",
+                            { className: "" },
+                            React.createElement(
+                                "h4",
+                                null,
+                                this.props.headline
+                            ),
+                            React.createElement("p", { className: "articleDesc", dangerouslySetInnerHTML: this.rawMarkup() })
+                        )
+                    )
+                );
+            }
+        });
+        var VideoList = React.createClass({
+            displayName: "VideoList",
+
+            render: function render() {
+                var VideoNodes = this.props.data.map(function (comment) {
+                    return React.createElement(
+                        VideoElement,
+                        { src: comment.url, key: comment.id, headline: comment.title, tags: comment.tags },
+                        comment.desc
+                    );
+                });
+                return React.createElement(
+                    "div",
+                    { className: "col-lg-12" },
+                    VideoNodes
+                );
+            }
+        });
+        var VideoBox = React.createClass({
+            displayName: "VideoBox",
+
+            render: function render() {
+                return React.createElement(
+                    "div",
+                    { className: "row" },
+                    React.createElement(VideoList, { data: this.props.data })
+                );
+            }
+        });
+
+        var app = angular.module("ReactAngular", []).controller("VideosController", function () {
+            this.text = "Skanska Video Series";
+        });
+        app.directive("videodirective", function () {
+            return {
+                restrict: 'E',
+                replace: true,
+                scope: true,
+                template: '<div></div>',
+                link: function(scope, element, attrs) {
+                    // React and Angular, living in harmony:
+                    ReactDOM.render(React.createElement(VideoBox, { data: videos }), element[0]);
+                }
+            }
+        });
+        app.directive("navigationbar", function () {
+            return {
+                restrict: 'E',
+                replace: true,
+                scope: true,
+                template: '<div></div>',
+                link: function (scope, element, attrs) {
+                    // React and Angular, living in harmony:
+                    ReactDOM.render(React.createElement(FilterMenuList, { data: navigationBars }), element[0]);
+                }
+            }
+        });
+        app.directive("tagList", function () {
+            return {
+                restrict: "E",
+                replace: true,
+                scope: true,
+                template: '<div></div>',
+                link: function (scope, element, attrs) {
+
+                }
+            }
+        });
+    </script>
+</body>
+</html>
